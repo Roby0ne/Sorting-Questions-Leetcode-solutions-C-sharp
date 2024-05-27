@@ -1,0 +1,31 @@
+public class Solution {
+    public bool ContainsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+      
+      if(t == 0) return ContainsNearbyDuplicate(nums,k);
+      
+      Dictionary<long,long> dict = new Dictionary<long,long>();
+
+      for(int i = 0; i < nums.Length; i++)
+        dict.Add(i,nums[i]);
+      
+      foreach(KeyValuePair<long,long> keyvalue in dict)
+      {
+         var result = dict.Where( p => p.Key != keyvalue.Key && Math.Abs(p.Key - keyvalue.Key) <=k && Math.Abs(p.Value - keyvalue.Value) <= t);
+        if(result != null && result.Count() > 0) return true;
+      }
+      return false;
+    }
+  
+      public bool ContainsNearbyDuplicate(int[] nums, int k) {
+      Dictionary<int,int> dict = new Dictionary<int,int>();
+      for(int i = 0; i < nums.Length; i++)
+      {
+        if(dict.ContainsKey(nums[i]) &&  i  - dict[nums[i]] <= k)
+        {
+          return true;
+        }
+        dict[nums[i]] = i;
+      }
+      return false;
+    }
+}
